@@ -39,7 +39,7 @@ for k in np.arange(2,len_):
 
     X = SelectKBest(f_classif,k=k).fit_transform(Z,y) # Select k best-separating features
 
-    for tsh in np.linspace(0.2,0.8,61):
+    for tsh in np.linspace(0.4,0.6,21):
 
         acc = 0.
 
@@ -73,13 +73,15 @@ print(pars[np.argmax(pars[:,2])])
 k = pars[np.argmax(pars[:,2])][0]
 tsh = pars[np.argmax(pars[:,2])][1]
 
-X = SelectKBest(f_classif,k=k).fit_transform(Z,y)
+kb = SelectKBest(f_classif,k=k)
+kb.fit(Z,y)
+X = kb.transform(Z)
 classifier.fit(X,y)
 
 t = classifier.predict(X)
 
 plt.scatter(y,t,c=y,s=50)
-plt.axhline(tsh,linestyle='--',color='k')
+plt.axhline(tsh,linestyle='--',color='k') # tsh may be changed to move along a ROC curve
 plt.grid()
 plt.xlabel('Class (0: no episode, 1: episode)')
 plt.ylabel('BR Score')
@@ -89,11 +91,12 @@ plt.clf()
 
 ### CHECK FOR OVER-FITTING ###
 
-U = np.random.uniform(0.,21.,size=np.shape(X)) # Just create a random k-simplex and randomly label it
+U = np.random.uniform(0.,4.,size=np.shape(Z)) # Just create a random k-simplex and randomly label it
 t = np.floor(np.random.uniform(0.,2.,size=np.shape(y)))
+U = kb.transform(U) # Transform according to Skb rule
 
 classifier.fit(X,y)
-out = classifier.predict(U)
+out = classifier.predict(U) # Predict random data
 
 # Plot for visual inspection of the randomized data
 
@@ -102,12 +105,10 @@ plt.axhline(tsh,linestyle='--',color='k')
 plt.grid()
 plt.xlabel('Class (0: no episode, 1: episode)')
 plt.ylabel('BR Score')
-plt.title('Class separation by Bayesian Ridge score')
+plt.title('Random class separation')
 plt.show()
 plt.clf()
 
 np.place(out,out<=tsh,0)
 np.place(out,out>tsh,1)
-print(len(out[out==0]),len(out[out==1]))
-print(len(t[t==0]),len(t[t==1]))
 print(1. - np.sum(np.mod(out+t,2))/len(t)) # If not too far from 0.5 and FNR is similar fot FPR, everything fine
