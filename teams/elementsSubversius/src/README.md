@@ -2,8 +2,7 @@
 
 Poned vuestro código en esta carpeta.
 
-El código en R transforma los datos en el formato correcto para aplicar los algoritmos de machine learning.
-El código en Python aplica los algoritmos de machine learning y valida los resultados por cross validation.
+Hemos utilizado código R para preparar el dataset y Python para generar el modelo a partir del dataset creado con R, usando Bayesian Ridge Regression para asignar una puntuación, y después buscando un límite que separe el episodio de la ausencia de episodio.
 
 ---
 ![](../../../images/banner_es.png) 
