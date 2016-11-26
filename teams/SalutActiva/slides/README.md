@@ -1,7 +1,3 @@
-<img src="../../images/hachandhealth_banner.png" alt="" style="width:;"/>
+L'enllaç a la web: 
 
-Poned en esta carpeta las slides de vuestra presentación.
-
----
-![](../../images/banner_es.png) 
-![](../../images/colaboradores_hack-health.png) 
+http://hackandhealth2016.viktorbanos.com/
